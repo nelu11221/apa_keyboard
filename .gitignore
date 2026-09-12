@@ -1,0 +1,16 @@
+# Motor C++
+engine/build/
+
+# Backend Python
+server/.venv/
+server/__pycache__/
+server/**/__pycache__/
+server/*.db
+server/.env
+
+# Front-end
+web/node_modules/
+web/dist/
+
+# Sistem
+.DS_Store
