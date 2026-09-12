@@ -1,0 +1,7 @@
+web
+engine/build
+server/.venv
+server/*.db
+server/.env
+server/**/__pycache__
+.git

@@ -107,17 +107,18 @@ Fotografiile de produs nu sunt incluse; site-ul desenează placeholder-e SVG. Ve
 Setează în Netlify → *Site configuration → Environment variables*:
 `VITE_API_BASE = https://<adresa-backend>` (fără slash la final), apoi *Trigger deploy*.
 
-**Backend (FastAPI + motor C++):** găzduit separat (Render / Railway / Fly.io — orice mediu cu
-Python 3 și un compilator C++). Comenzi de build/start:
+**Backend (Render, gratuit):** repo-ul are `Dockerfile` (compilează motorul C++ și pornește FastAPI)
+și `render.yaml` (Blueprint).
 
-```bash
-cd engine && make && cd ../server && pip install -r requirements.txt
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
-```
+1. [render.com](https://render.com) → *New → Blueprint* → alege repo-ul `apa_keyboard` → *Apply*.
+2. În serviciul `nexa-api` → *Environment*: `FRONTEND_URL` = adresa site-ului Netlify; opțional
+   `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET`.
+3. După deploy, copiază URL-ul serviciului (ex. `https://nexa-api.onrender.com`) și verifică
+   `https://nexa-api.onrender.com/api/health` → `{"status":"ok"}`.
+4. În Netlify → *Environment variables*: `VITE_API_BASE` = acel URL → *Trigger deploy*.
 
-Variabile de mediu pe backend: `FRONTEND_URL=https://<site>.netlify.app`, `ENGINE_PATH=../engine/build/search_engine`,
-`STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`. Fără backend, site-ul se încarcă, dar catalogul, căutarea
-și checkout-ul nu au de unde lua date.
+Notă: pe planul gratuit Render serviciul „adoarme" după 15 min fără trafic; prima cerere durează
+~30–60 s. Baza de date SQLite e locală containerului (se re-populează din seed la fiecare deploy).
 
 ## Endpoint-uri principale
 

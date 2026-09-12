@@ -1,0 +1,15 @@
+# Render Blueprint: New → Blueprint → alege repo-ul → Apply.
+services:
+  - type: web
+    name: nexa-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: FRONTEND_URL
+        value: https://SITE-UL-TAU.netlify.app   # înlocuiește cu adresa reală de pe Netlify
+      - key: STRIPE_SECRET_KEY
+        sync: false   # se completează în dashboard-ul Render (secret)
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
