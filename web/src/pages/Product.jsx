@@ -45,7 +45,7 @@ export default function Product() {
     setSwitchesSlug(null)
     setKeycapsSlug(null)
     api.product(slug).then(setProduct).catch((requestError) => setError(requestError.message))
-    api.products().then(setAllProducts).catch(() => {})
+    api.products().then((list) => setAllProducts(Array.isArray(list) ? list : [])).catch(() => {})
   }, [slug])
 
   const isKeyboard = product?.category === 'keyboards'

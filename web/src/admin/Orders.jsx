@@ -10,7 +10,7 @@ export default function Orders() {
   const [result, setResult] = useState(null)
 
   useEffect(() => {
-    api.orders().then(setOrders).catch((requestError) => setError(requestError.message))
+    api.orders().then((list) => setOrders(Array.isArray(list) ? list : [])).catch((requestError) => setError(requestError.message))
   }, [])
 
   useEffect(() => {

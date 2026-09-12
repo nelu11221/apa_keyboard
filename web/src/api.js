@@ -10,7 +10,17 @@ async function request(path, options = {}) {
     ...options,
   })
   if (response.status === 204) return null
-  const body = await response.json().catch(() => ({}))
+  // Fără backend (ex. Netlify fără VITE_API_BASE), redirect-ul SPA răspunde
+  // cu index.html la /api/... — nu e JSON, deci semnalăm clar, nu crăpăm.
+  const contentType = response.headers.get('content-type') || ''
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      API_BASE
+        ? `Backend-ul nu a răspuns cu JSON (${response.status}).`
+        : 'Backend-ul nu este configurat: setează VITE_API_BASE la adresa serverului FastAPI.',
+    )
+  }
+  const body = await response.json()
   if (!response.ok) {
     const message = typeof body.detail === 'string' ? body.detail : JSON.stringify(body.detail ?? body)
     throw new Error(message || `HTTP ${response.status}`)

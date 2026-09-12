@@ -147,7 +147,7 @@ function SearchLogs() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    api.admin.searchLogs(30).then(setLogs).catch((e) => setError(e.message))
+    api.admin.searchLogs(30).then((list) => setLogs(Array.isArray(list) ? list : [])).catch((e) => setError(e.message))
   }, [])
 
   return (

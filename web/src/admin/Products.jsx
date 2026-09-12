@@ -18,7 +18,7 @@ export default function Products() {
   const [saving, setSaving] = useState(false)
 
   function load() {
-    api.products().then(setProducts).catch((requestError) => setError(requestError.message))
+    api.products().then((list) => setProducts(Array.isArray(list) ? list : [])).catch((requestError) => setError(requestError.message))
   }
 
   useEffect(load, [])

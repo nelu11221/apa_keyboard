@@ -40,7 +40,7 @@ export default function Shop() {
   const [draft, setDraft] = useState(query)
 
   useEffect(() => {
-    api.products().then(setProducts).catch((error) => setLoadError(error.message))
+    api.products().then((list) => setProducts(Array.isArray(list) ? list : [])).catch((error) => setLoadError(error.message))
   }, [])
 
   useEffect(() => setDraft(query), [query])

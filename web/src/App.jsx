@@ -7,6 +7,7 @@ import Dashboard from './admin/Dashboard.jsx'
 import Orders from './admin/Orders.jsx'
 import Products from './admin/Products.jsx'
 import Settings from './admin/Settings.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 import Footer from './components/Footer.jsx'
 import Nav from './components/Nav.jsx'
 import Cart from './pages/Cart.jsx'
@@ -53,7 +54,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <>
+    <ErrorBoundary>
       <ScrollToTop />
       <Routes>
         <Route path="/admin" element={<AdminLayout />}>
@@ -69,6 +70,6 @@ export default function App() {
         <Route path="/cart" element={<StoreLayout><Cart /></StoreLayout>} />
         <Route path="/success" element={<StoreLayout><Success /></StoreLayout>} />
       </Routes>
-    </>
+    </ErrorBoundary>
   )
 }
