@@ -45,7 +45,16 @@ export default function ExplodedScroll({
       frame = 0
       const rect = section.getBoundingClientRect()
       const scrollable = rect.height - window.innerHeight
-      const progress = scrollable > 0 ? Math.min(1, Math.max(0, -rect.top / scrollable)) : 1
+      let progress
+      if (scrollable > 0) {
+        progress = Math.min(1, Math.max(0, -rect.top / scrollable))
+      } else {
+        // pe mobil secțiunea nu e lipicioasă: produsul se desface pe măsură ce
+        // figura urcă din partea de jos a ecranului spre mijloc
+        const figure = stage.querySelector('.explode-figure')
+        const top = (figure || section).getBoundingClientRect().top
+        progress = Math.min(1, Math.max(0, (window.innerHeight * 0.95 - top) / (window.innerHeight * 0.5)))
+      }
       stage.style.setProperty('--p', progress.toFixed(4))
 
       // Clipul e "derulat" de scroll: poziția din clip = progresul secțiunii,

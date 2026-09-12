@@ -22,9 +22,17 @@ export default function HeroScroller() {
     const track = trackRef.current
     if (!section || !track) return undefined
 
+    // Pe ecrane mici banda devine un carusel nativ cu swipe (CSS scroll-snap);
+    // nu mai legăm poziția de scroll-ul vertical.
+    const mobile = window.matchMedia('(max-width: 760px)')
+
     let frame = 0
     function update() {
       frame = 0
+      if (mobile.matches) {
+        track.style.transform = ''
+        return
+      }
       const rect = section.getBoundingClientRect()
       const scrollable = rect.height - window.innerHeight
       const progress = scrollable > 0 ? Math.min(1, Math.max(0, -rect.top / scrollable)) : 0
@@ -35,12 +43,20 @@ export default function HeroScroller() {
       if (!frame) frame = requestAnimationFrame(update)
     }
 
+    // pe mobil, punctul activ urmărește slide-ul derulat orizontal
+    function onTrackScroll() {
+      if (!mobile.matches) return
+      setActiveIndex(Math.round(track.scrollLeft / track.clientWidth))
+    }
+
     update()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
+    track.addEventListener('scroll', onTrackScroll, { passive: true })
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
+      track.removeEventListener('scroll', onTrackScroll)
       if (frame) cancelAnimationFrame(frame)
     }
   }, [count])

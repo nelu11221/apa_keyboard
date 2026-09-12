@@ -81,6 +81,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .nav-links a { font-size: 12.5px; color: var(--ink-2); }
 .nav-links a:hover, .nav-links a.active { color: var(--ink); }
 .nav-actions { justify-self: end; display: flex; align-items: center; gap: 14px; }
+.nav-links-mobile { display: none; }
 .nav-cart { position: relative; display: inline-flex; padding: 6px; color: var(--ink); }
 .nav-cart-count {
   position: absolute; top: -2px; right: -4px; min-width: 16px; height: 16px; padding: 0 4px;
@@ -584,6 +585,150 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .home section.explode-scroll { height: auto; }
   .explode-sticky { position: static; height: auto; }
   .explode-figure { width: min(1100px, 92vw); max-height: none; }
-  .explode-sticky { --p: 1 !important; }
   .explode-label { position: static; }
+}
+
+
+/* ============================================================
+   Mobil
+   ============================================================ */
+@media (max-width: 760px) {
+  /* nav: logo + acțiuni pe primul rând, linkurile pe al doilea */
+  .nav { grid-template-columns: auto 1fr; row-gap: 10px; padding: 14px 16px 10px; }
+  .nav-links { display: none; }
+  .nav-links-mobile {
+    grid-column: 1 / -1; display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    margin: 0 -16px; padding: 0 16px;
+  }
+  .nav-links-mobile::-webkit-scrollbar { display: none; }
+  .nav-links-mobile a { flex: 0 0 auto; padding: 7px 12px; border-radius: 999px; background: var(--pill); font-size: 12.5px; color: var(--ink-2); white-space: nowrap; }
+  .nav-links-mobile a.active { background: var(--dark); color: #fff; }
+  .nav-actions { justify-self: end; gap: 8px; }
+  .btn-sm { padding: 10px 14px; }
+
+  /* hero */
+  .hero { padding-top: 24px !important; }
+  .hero-inner { padding: 12px 0 24px; background-image: none; }
+  .hero h1 { font-size: 44px; }
+  .hero-sub { font-size: 13.5px; margin-top: 18px; }
+  .hero-actions { flex-direction: column; gap: 10px; }
+  .hero-actions .btn { width: 100%; }
+
+  /* banda de produse → carusel nativ cu swipe */
+  .home section.hero-scroller { height: auto; margin-top: 8px; }
+  .hero-scroller-sticky { position: relative; height: auto; overflow: visible; padding-bottom: 34px; }
+  .hero-track {
+    overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    transform: none !important;
+  }
+  .hero-track::-webkit-scrollbar { display: none; }
+  .hero-scroll-slide { scroll-snap-align: start; height: auto; min-height: 380px; padding: 32px 16px 16px; gap: 14px; }
+  .hero-slide-figure { max-width: 100%; }
+  .hero-slide-media img { max-height: 46vh; }
+  .hero-slide-media .pic { height: 260px; }
+  .hero-slide-name { font-size: 18px; }
+  .hero-dots { bottom: 12px; }
+  .hotspot-tip { width: 170px; font-size: 11px; }
+
+  /* secțiuni generale */
+  .home section { padding-left: 16px; padding-right: 16px; }
+  .pills-row { padding-top: 28px !important; gap: 8px; justify-content: flex-start; }
+  .pill { padding: 10px 14px; font-size: 11px; }
+  .statement { padding-top: 40px !important; gap: 18px; }
+  .statement h2 { font-size: 30px; }
+  .statement p { font-size: 17px; }
+  .section-head h2 { font-size: 30px; }
+  .more, .benefits, .switches, .keycaps, .studio { padding-top: 64px !important; }
+  .more-grid { margin-top: 24px; }
+  .more-visual { min-height: 300px; }
+  .card-icon { margin-bottom: 20px; }
+  .benefit-icon { margin-bottom: 20px; }
+
+  /* vederea explodată: static, etichete sub imagine */
+  .home section.explode-scroll { margin-top: 48px; }
+  .explode-sticky { padding: 0 16px; grid-template-rows: auto auto auto; }
+  .explode-figure { width: 100%; }
+  .explode-stage { display: grid; gap: 10px; }
+  .explode-label { position: static; transform: none !important; opacity: 1 !important; margin: 4px 0; }
+  .explode-label i { display: none; }
+  .explode-hint { display: none; }
+  .explode-head h2 { font-size: 28px; }
+
+  /* switch-uri */
+  .switches-head, .keycaps-head { grid-template-columns: 1fr; gap: 12px; margin: 16px 0 18px; }
+  .switch-list li a { padding: 12px 12px; gap: 14px; }
+  .switch-name { font-size: 22px; }
+  .switch-list li.active a { padding-right: 130px; }
+  .switch-thumb { width: 110px; height: 72px; right: 10px; }
+
+  /* keycaps + film */
+  .keycaps-grid { grid-template-columns: 1fr; gap: 18px; }
+  .keycaps-text p { margin-bottom: 16px; }
+  .keycaps-film-tag { left: 10px; bottom: 10px; font-size: 10px; padding: 7px 10px; }
+
+  /* studio */
+  .studio-head h2 { font-size: 30px; }
+  .studio-actions { flex-direction: column; gap: 14px; }
+  .studio-actions .btn { width: 100%; }
+
+  /* CTA + footer */
+  .cta { margin-top: 64px !important; padding: 44px 16px 40px !important; }
+  .cta h2 { font-size: 30px; }
+  .footer { padding: 0 16px; margin-top: 24px; }
+  .footer-card { padding: 24px 20px 22px; }
+  .footer-cols { grid-template-columns: 1fr 1fr; gap: 18px 24px; padding-right: 0; }
+  .footer-keycap { display: none; }
+  .footer-form { flex-direction: column; }
+  .footer-card h4 { margin-top: 28px; }
+  .footer-bottom { margin-top: 30px; flex-direction: column; align-items: flex-start; }
+
+  /* shop */
+  .shop, .product-page, .cart-page { padding: 20px 16px 56px; }
+  .shop-head h1 { font-size: 34px; }
+  .shop-toolbar { margin: 18px 0 14px; }
+  .shop-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
+  .shop-tabs::-webkit-scrollbar { display: none; }
+  .shop-tab { flex: 0 0 auto; }
+  .shop-search { min-width: 0; width: 100%; }
+  .product-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .product-media { height: 150px; padding: 14px; }
+  .product-body { padding: 12px 12px 4px; }
+  .product-body h3 { font-size: 14px; }
+  .product-body p { font-size: 11.5px; }
+  .product-foot { padding: 10px 12px 14px; flex-direction: column; align-items: stretch; gap: 8px; }
+  .product-foot .btn { width: 100%; }
+  .product-price { font-size: 14px; }
+
+  /* produs */
+  .product-layout { gap: 22px; }
+  .product-gallery { min-height: 260px; padding: 20px; }
+  .product-info h1 { font-size: 32px; }
+  .product-buy { flex-wrap: wrap; }
+  .product-buy .btn { flex: 1 1 auto; }
+  .option-grid { grid-template-columns: repeat(3, 1fr); }
+  .specs div { grid-template-columns: 110px 1fr; }
+
+  /* coș */
+  .cart-page h1 { font-size: 32px; }
+  .cart-item { grid-template-columns: 64px 1fr; gap: 10px 12px; padding: 14px; }
+  .cart-thumb { width: 64px; height: 48px; }
+  .cart-item .qty { grid-column: 2; justify-self: start; }
+  .cart-line { grid-column: 2; text-align: left; }
+
+  /* admin: bara laterală devine un antet compact cu meniu derulabil */
+  .admin-side { padding: 16px 16px 12px; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px 12px; }
+  .admin-brand { margin-bottom: 0; }
+  .admin-back { margin-top: 0; margin-left: auto; }
+  .admin-nav { flex-basis: 100%; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
+  .admin-nav::-webkit-scrollbar { display: none; }
+  .admin-nav a { flex: 0 0 auto; padding: 8px 12px; font-size: 13px; white-space: nowrap; }
+  .admin { grid-template-columns: minmax(0, 1fr); }
+  .admin-main { padding: 20px 16px 40px; min-width: 0; }
+  .panel { overflow-x: auto; }
+  .table { min-width: 560px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .admin-head h1 { font-size: 24px; }
+  .admin-toolbar .admin-input { min-width: 0; width: 100%; }
+  .table { font-size: 12px; }
+  .table th, .table td { padding: 8px 6px; }
 }

@@ -27,7 +27,7 @@ export default function Nav() {
         <NavLink to="/shop">Product</NavLink>
         <Link to="/#features" onClick={onHashLink('features')}>Features</Link>
         <Link to="/#explore" onClick={onHashLink('explore')}>Explore</Link>
-        <NavLink to="/shop?category=keycaps">Customize</NavLink>
+        <Link to="/shop?category=keycaps">Customize</Link>
       </nav>
 
       <div className="nav-actions">
@@ -37,6 +37,15 @@ export default function Nav() {
         </Link>
         <Link to="/shop" className="btn btn-orange btn-sm">SHOP NOW</Link>
       </div>
+
+      {/* pe mobil, linkurile trec pe un rând separat, derulabil */}
+      <nav className="nav-links-mobile">
+        <NavLink to="/shop">Product</NavLink>
+        <Link to="/#features" onClick={onHashLink('features')}>Features</Link>
+        <Link to="/#explore" onClick={onHashLink('explore')}>Explore</Link>
+        <Link to="/shop?category=keycaps">Customize</Link>
+        <NavLink to="/admin">Admin</NavLink>
+      </nav>
     </header>
   )
 }
