@@ -1,8 +1,11 @@
-// Acces la backend-ul FastAPI. Cererile merg la /api, pe care Vite îl
-// redirecționează către http://127.0.0.1:8000 în dezvoltare.
+// Acces la backend-ul FastAPI. În dezvoltare cererile merg la /api (proxy
+// Vite → :8000). În producție (ex. Netlify) backend-ul e pe alt domeniu:
+// setează VITE_API_BASE (ex. https://nexa-api.onrender.com) la build.
+
+const API_BASE = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '')
 
 async function request(path, options = {}) {
-  const response = await fetch(path, {
+  const response = await fetch(`${API_BASE}${path}`, {
     headers: { 'Content-Type': 'application/json' },
     ...options,
   })

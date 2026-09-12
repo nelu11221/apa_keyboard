@@ -1,0 +1,17 @@
+# Deploy pe Netlify: doar front-end-ul (web/). Backend-ul FastAPI + motorul C++
+# trebuie găzduite separat (ex. Render / Railway / Fly.io); pune URL-ul lor în
+# variabila de mediu VITE_API_BASE din setările site-ului Netlify.
+[build]
+  base    = "web"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS    = "--legacy-peer-deps"
+
+# SPA: orice rută (ex. /shop, /product/nexa-75, /admin) servește index.html
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200

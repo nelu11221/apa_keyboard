@@ -101,6 +101,24 @@ Fotografiile de produs nu sunt incluse; site-ul desenează placeholder-e SVG. Ve
 | `/admin/algorithms` | teorie, benchmark (scară liniară/log), jurnalul căutărilor reale |
 | `/admin/settings` | algoritmul folosit de căutarea din magazin |
 
+## Deploy
+
+**Front-end (Netlify):** repo-ul are `netlify.toml` (base `web/`, publish `web/dist`, redirect SPA).
+Setează în Netlify → *Site configuration → Environment variables*:
+`VITE_API_BASE = https://<adresa-backend>` (fără slash la final), apoi *Trigger deploy*.
+
+**Backend (FastAPI + motor C++):** găzduit separat (Render / Railway / Fly.io — orice mediu cu
+Python 3 și un compilator C++). Comenzi de build/start:
+
+```bash
+cd engine && make && cd ../server && pip install -r requirements.txt
+uvicorn app.main:app --host 0.0.0.0 --port $PORT
+```
+
+Variabile de mediu pe backend: `FRONTEND_URL=https://<site>.netlify.app`, `ENGINE_PATH=../engine/build/search_engine`,
+`STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`. Fără backend, site-ul se încarcă, dar catalogul, căutarea
+și checkout-ul nu au de unde lua date.
+
 ## Endpoint-uri principale
 
 | Metodă | Rută | Rol |
