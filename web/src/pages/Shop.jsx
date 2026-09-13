@@ -33,14 +33,16 @@ export default function Shop() {
   const category = params.get('category') ?? ''
   const query = params.get('q') ?? ''
 
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState(null) // null = încă se încarcă
   const [loadError, setLoadError] = useState('')
   const [searchResult, setSearchResult] = useState(null)
   const [searchError, setSearchError] = useState('')
   const [draft, setDraft] = useState(query)
 
   useEffect(() => {
-    api.products().then((list) => setProducts(Array.isArray(list) ? list : [])).catch((error) => setLoadError(error.message))
+    api.products()
+      .then((list) => setProducts(Array.isArray(list) ? list : []))
+      .catch((error) => { setLoadError(error.message); setProducts([]) })
   }, [])
 
   useEffect(() => setDraft(query), [query])
@@ -66,7 +68,7 @@ export default function Shop() {
   }, [draft])
 
   const visible = useMemo(() => {
-    let list = products
+    let list = products ?? []
     if (category) list = list.filter((product) => product.category === category)
     if (searchResult) {
       const ids = new Set(searchResult.results.map((r) => r.id))
@@ -144,7 +146,10 @@ export default function Shop() {
             </div>
           </article>
         ))}
-        {visible.length === 0 && !loadError && <p className="shop-empty">Nothing matches your search.</p>}
+        {products === null && !loadError && (
+          <p className="shop-empty">Loading products… the server may take up to a minute to wake up.</p>
+        )}
+        {products !== null && visible.length === 0 && !loadError && <p className="shop-empty">Nothing matches your search.</p>}
       </div>
     </div>
   )
