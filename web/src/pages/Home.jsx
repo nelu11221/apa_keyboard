@@ -5,7 +5,7 @@ import ExplodedScroll from '../components/ExplodedScroll.jsx'
 import { images } from '../images.js'
 import HeroScroller from '../components/HeroScroller.jsx'
 import StudioSection from '../components/StudioSection.jsx'
-import { ArrowRight, Bolt, CheckBadge, Diamond, Grid, Logo, Shield, Speaker } from '../components/Icons.jsx'
+import { ArrowRight, Bolt, CheckBadge, Diamond, Display, Grid, Knob, Logo, Shield, Speaker } from '../components/Icons.jsx'
 import Picture from '../components/Picture.jsx'
 
 const FEATURE_PILLS = [
@@ -151,17 +151,17 @@ export default function Home() {
         <div className="more-grid">
           <div className="more-cards">
             <article className="card">
-              <span className="card-icon">⚡</span>
+              <span className="card-icon"><Bolt /></span>
               <h3>Precision Performance</h3>
               <p>Responsive mechanical switches engineered for every keystroke.</p>
             </article>
             <article className="card">
-              <span className="card-icon">🎛️</span>
+              <span className="card-icon"><Knob /></span>
               <h3>Total Control</h3>
               <p>Two programmable knobs for volume, scrolling, zoom, or anything you map them to.</p>
             </article>
             <article className="card">
-              <span className="card-icon">🖥️</span>
+              <span className="card-icon"><Display /></span>
               <h3>Smart Display</h3>
               <p>Access time, system information, profiles, and more with the integrated display.</p>
             </article>

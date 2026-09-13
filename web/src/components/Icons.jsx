@@ -76,6 +76,28 @@ export function Shield() {
   )
 }
 
+// buton rotativ (knob) — cardul „Total Control"
+export function Knob() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" fill="#FF4F1F" />
+      <circle cx="12" cy="12" r="5.5" fill="none" stroke="#fff" strokeWidth="1.6" />
+      <path d="M12 6.5v4" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+// ecran mic (display OLED) — cardul „Smart Display"
+export function Display() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF4F1F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="4.5" width="18" height="12" rx="2.5" fill="#FF4F1F" />
+      <path d="M8 20h8M12 16.5V20" />
+      <path d="M7.5 9.5h6M7.5 12.5h4" stroke="#fff" strokeWidth="1.6" />
+    </svg>
+  )
+}
+
 export function Cart({ size = 18 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
