@@ -39,7 +39,9 @@ function ScrollToTop() {
     let attempts = 0
     let frame = 0
     function scrollToTarget() {
-      const target = document.getElementById(hash.slice(1))
+      let target = document.getElementById(hash.slice(1))
+      // secțiune ascunsă pe ecranul curent (ex. #explore pe mobil) → următoarea vizibilă
+      if (target && target.getBoundingClientRect().height === 0) target = document.getElementById('benefits') || target
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' })
       } else if (attempts < 20) {

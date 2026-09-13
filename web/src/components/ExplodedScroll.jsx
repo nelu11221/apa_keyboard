@@ -24,6 +24,7 @@ export default function ExplodedScroll({
   hint = 'Scroll to open the keyboard',
   assembled = images.heroKeyboard,
   exploded = images.explodedKeyboard,
+  staticImage = null, // varianta cu fundal transparent, folosită pe mobil (static)
   video = images.explodedVideo,
   labels = KEYBOARD_LABELS,
   alt = 'Exploded view of the NEXA keyboard',
@@ -33,12 +34,21 @@ export default function ExplodedScroll({
   const stageRef = useRef(null)
   const videoRef = useRef(null)
   const [videoReady, setVideoReady] = useState(false)
-  const hasVideo = Boolean(video)
+  // Pe telefon secțiunea e statică: titlu, imaginea explodată și etichetele,
+  // fără clip, fără lipire la scroll și fără efecte.
+  const [isStatic, setIsStatic] = useState(() => window.matchMedia('(max-width: 760px)').matches)
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 760px)')
+    const onChange = () => setIsStatic(query.matches)
+    query.addEventListener('change', onChange)
+    return () => query.removeEventListener('change', onChange)
+  }, [])
+  const hasVideo = Boolean(video) && !isStatic
 
   useEffect(() => {
     const section = sectionRef.current
     const stage = stageRef.current
-    if (!section || !stage) return undefined
+    if (!section || !stage || isStatic) return undefined
 
     // Pe ecrane tactile (iOS mai ales) derularea clipului cadru cu cadru prin
     // currentTime nu e de încredere: browserul nu preîncarcă și rămâne pe primul
@@ -108,10 +118,10 @@ export default function ExplodedScroll({
       if (frame) cancelAnimationFrame(frame)
       clearTimeout(rewindTimer)
     }
-  }, [])
+  }, [isStatic])
 
   return (
-    <section ref={sectionRef} className="explode-scroll" id={id}>
+    <section ref={sectionRef} className={`explode-scroll ${isStatic ? 'is-static' : ''}`} id={id}>
       <div ref={stageRef} className="explode-sticky">
         <div className="explode-head">
           {heading && <h2>{heading}</h2>}
@@ -134,7 +144,7 @@ export default function ExplodedScroll({
               />
             )}
             <img className="explode-assembled" src={assembled} alt="" aria-hidden="true" />
-            <img className="explode-open" src={exploded} alt={alt} />
+            <img className="explode-open" src={isStatic && staticImage ? staticImage : exploded} alt={alt} />
           </div>
 
           {/* pe desktop etichetele plutesc lângă figură; pe ecrane mici stau într-un rând sub ea */}

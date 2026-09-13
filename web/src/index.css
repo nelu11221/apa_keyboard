@@ -546,6 +546,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .explode-intro { text-align: center; max-width: 560px; font-size: 14px; color: var(--ink-2); line-height: 1.6; }
 .explode-stage { position: relative; width: 100%; max-width: 1180px; align-self: center; display: grid; place-items: center; }
 .explode-labels { display: contents; }
+.explore-desktop { display: contents; }
 .explode-figure { position: relative; width: min(1100px, 78vw); aspect-ratio: 16 / 9; max-height: 74vh; }
 .explode-figure img { position: absolute; left: 50%; top: 50%; display: block; }
 /* clipul generat: acoperă figura; cât timp nu e încărcat, rămân imaginile de dedesubt */
@@ -712,16 +713,24 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .more-visual { min-height: 300px; }
   .card-icon, .benefit-icon { margin-bottom: 18px; }
 
-  /* ---- vederea explodată: lipicioasă și pe mobil, figura mărită (marginile ies din ecran) ---- */
-  .home section.explode-scroll { margin-top: 40px; height: 220svh; }
-  .explode-sticky { padding: 22px 16px 16px; row-gap: 10px; overflow: hidden; grid-template-columns: minmax(0, 1fr); }
+  /* ---- vederile explodate: pe telefon, tastatura lipsește, switch-ul și mouse-ul sunt imagini statice ---- */
+  .explore-desktop { display: none; }
+  .home section.explode-scroll { margin-top: 48px; height: auto; }
+  .explode-scroll.is-static .explode-sticky {
+    position: static; height: auto; padding: 0 16px; row-gap: 16px; overflow: visible; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto;
+  }
   .explode-head { gap: 8px; }
   .explode-head h2 { font-size: 27px; }
   .explode-intro { font-size: 13px; line-height: 1.5; }
-  .explode-figure { width: min(132vw, calc((100svh - 330px) * 16 / 9)); max-width: none; }
+  .explode-scroll.is-static .explode-figure { width: 100%; max-width: none; aspect-ratio: 16 / 9; }
+  .explode-scroll.is-static .explode-assembled { display: none; }
+  .explode-scroll.is-static .explode-open {
+    opacity: 1; transform: translate(-50%, -50%); -webkit-mask-image: none; mask-image: none; filter: none;
+  }
+  .explode-scroll.is-static .explode-label { opacity: 1; transform: none; }
   .explode-label span { padding: 8px 12px; font-size: 11.5px; }
   .explode-label small { font-size: 10px; }
-  .explode-hint { font-size: 10px; }
+  .explode-scroll.is-static .explode-hint { display: none; }
 
   /* ---- switch-uri ---- */
   .switches-head, .keycaps-head { grid-template-columns: 1fr; gap: 12px; margin: 16px 0 18px; }

@@ -54,8 +54,6 @@ export default function Home() {
   useEffect(() => {
     const video = filmRef.current
     if (!video) return undefined
-    video.muted = true
-    video.setAttribute('muted', '')
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) video.play().catch(() => {})
@@ -146,7 +144,10 @@ export default function Home() {
       </section>
 
       {/* ---------- Exploded view (Nexa) — se deschide la scroll ---------- */}
-      <ExplodedScroll />
+      {/* pe mobil, secțiunea cinematică a tastaturii nu se afișează (vezi CSS .explore-desktop) */}
+      <div className="explore-desktop">
+        <ExplodedScroll />
+      </div>
 
       {/* ---------- Benefits (Nexa) ---------- */}
       <section className="benefits" id="benefits">
@@ -200,6 +201,7 @@ export default function Home() {
         hint="Scroll to open the switch"
         assembled={images.switchAssembled}
         exploded={images.switchExploded}
+        staticImage={images.switchExplodedCut}
         video={images.switchVideo}
         labels={SWITCH_LABELS}
         alt="Exploded view of a NEXA switch"
@@ -245,6 +247,7 @@ export default function Home() {
         hint="Scroll to open the mouse"
         assembled={images.mouseStart}
         exploded={images.mouseExploded}
+        staticImage={images.mouseExplodedCut}
         video={images.mouseVideo}
         labels={MOUSE_LABELS}
         alt="Exploded view of the NEXA Pulse mouse"
