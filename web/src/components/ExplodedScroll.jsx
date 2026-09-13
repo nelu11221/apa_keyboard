@@ -104,20 +104,23 @@ export default function ExplodedScroll({
             <img className="explode-open" src={exploded} alt={alt} />
           </div>
 
-          {labels.map((label) => (
-            <div
-              key={label.text}
-              className={`explode-label explode-label-${label.side}`}
-              style={{ top: `${label.top}%`, '--i': label.order }}
-            >
-              {label.side === 'right' && <i />}
-              <span>
-                {label.text}
-                <small>{label.hint}</small>
-              </span>
-              {label.side === 'left' && <i />}
-            </div>
-          ))}
+          {/* pe desktop etichetele plutesc lângă figură; pe ecrane mici stau într-un rând sub ea */}
+          <div className="explode-labels">
+            {labels.map((label) => (
+              <div
+                key={label.text}
+                className={`explode-label explode-label-${label.side}`}
+                style={{ top: `${label.top}%`, '--i': label.order }}
+              >
+                {label.side === 'right' && <i />}
+                <span>
+                  {label.text}
+                  <small>{label.hint}</small>
+                </span>
+                {label.side === 'left' && <i />}
+              </div>
+            ))}
+          </div>
         </div>
 
         <p className="explode-hint">{hint}</p>

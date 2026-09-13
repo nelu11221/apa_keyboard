@@ -14,6 +14,7 @@ export default function HeroScroller() {
   const trackRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [activeHotspot, setActiveHotspot] = useState(null)
+  const [swiped, setSwiped] = useState(false)
 
   const count = heroSlides.length
 
@@ -47,6 +48,7 @@ export default function HeroScroller() {
     function onTrackScroll() {
       if (!mobile.matches) return
       setActiveIndex(Math.round(track.scrollLeft / track.clientWidth))
+      if (track.scrollLeft > 20) setSwiped(true)
     }
 
     update()
@@ -60,6 +62,14 @@ export default function HeroScroller() {
       if (frame) cancelAnimationFrame(frame)
     }
   }, [count])
+
+  // pe mobil: săgețile derulează caruselul la slide-ul vecin
+  function goTo(index) {
+    const track = trackRef.current
+    if (!track) return
+    const next = Math.min(count - 1, Math.max(0, index))
+    track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' })
+  }
 
   return (
     <section ref={sectionRef} className="hero-scroller" style={{ '--slides': count }}>
@@ -83,6 +93,7 @@ export default function HeroScroller() {
                       onMouseLeave={() => setActiveHotspot(null)}
                       onFocus={() => setActiveHotspot(key)}
                       onBlur={() => setActiveHotspot(null)}
+                      onClick={() => setActiveHotspot((current) => (current === key ? null : key))}
                       tabIndex={0}
                       role="button"
                       aria-label={spot.title}
@@ -101,6 +112,22 @@ export default function HeroScroller() {
                 <span className="hero-slide-name">{slide.name}</span>
                 <Link to={`/product/${slide.productSlug}`} className="hero-slide-link">View product →</Link>
               </div>
+
+              {/* pe mobil, textul punctului atins apare într-un card sub produs
+                  (tooltip-urile plutitoare nu încap pe ecran) */}
+              <div className="hero-slide-info" aria-live="polite">
+                {(() => {
+                  const spot = slide.hotspots.find((_, spotIndex) => activeHotspot === `${slideIndex}-${spotIndex}`)
+                  return spot ? (
+                    <>
+                      <strong>{spot.title}</strong>
+                      <span>{spot.text}</span>
+                    </>
+                  ) : (
+                    <span className="hero-slide-info-hint">Tap a point to learn more</span>
+                  )
+                })()}
+              </div>
             </div>
           ))}
         </div>
@@ -109,6 +136,12 @@ export default function HeroScroller() {
           {heroSlides.map((slide, index) => (
             <span key={slide.id} className={index === activeIndex ? 'active' : ''} />
           ))}
+        </div>
+
+        <div className={`hero-swipe ${swiped ? 'is-hidden' : ''}`} aria-hidden="true">
+          <button type="button" className="hero-arrow" aria-label="Previous product" onClick={() => goTo(activeIndex - 1)} disabled={activeIndex === 0}>←</button>
+          <span>Swipe to explore</span>
+          <button type="button" className="hero-arrow" aria-label="Next product" onClick={() => goTo(activeIndex + 1)} disabled={activeIndex === count - 1}>→</button>
         </div>
       </div>
     </section>

@@ -73,6 +73,12 @@ export default function Home() {
           <span className="hero-tag hero-tag-left"><CheckBadge /> HOT-SWAPPABLE SWITCHES</span>
           <span className="hero-tag hero-tag-right-top"><CheckBadge /> CUSTOM OLED DISPLAY</span>
           <span className="hero-tag hero-tag-right-bottom"><CheckBadge /> DUAL CONTROL KNOBS</span>
+          {/* pe mobil etichetele înclinate nu încap: le arătăm ca un rând de cipuri */}
+          <div className="hero-chips" aria-hidden="true">
+            <span><CheckBadge /> HOT-SWAPPABLE</span>
+            <span><CheckBadge /> OLED DISPLAY</span>
+            <span><CheckBadge /> DUAL KNOBS</span>
+          </div>
           <h1>Built for the<br />way you work<br />and play.</h1>
           <p className="hero-sub">
             A premium mechanical keyboard designed for performance, customization,

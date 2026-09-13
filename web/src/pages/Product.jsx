@@ -35,6 +35,17 @@ export default function Product() {
   const [switchesSlug, setSwitchesSlug] = useState(null)
   const [keycapsSlug, setKeycapsSlug] = useState(null)
 
+  // Pe mobil: când rândul „Add to cart” iese din ecran, apare o bară fixă jos.
+  const buyRef = useRef(null)
+  const [buyOffscreen, setBuyOffscreen] = useState(false)
+  useEffect(() => {
+    const row = buyRef.current
+    if (!row || !product) return undefined
+    const observer = new IntersectionObserver(([entry]) => setBuyOffscreen(!entry.isIntersecting && entry.boundingClientRect.top < 0), { threshold: 0 })
+    observer.observe(row)
+    return () => observer.disconnect()
+  }, [product])
+
   useEffect(() => {
     setProduct(null)
     setError('')
@@ -196,7 +207,7 @@ export default function Product() {
             </p>
           )}
 
-          <div className="product-buy">
+          <div className="product-buy" ref={buyRef}>
             <div className="qty">
               <button type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))}>−</button>
               <span>{quantity}</span>
@@ -220,6 +231,16 @@ export default function Product() {
 
           <Link to="/cart" className="link-arrow">Go to cart <ArrowRight /></Link>
         </div>
+      </div>
+
+      <div className={`buy-bar ${buyOffscreen ? 'is-visible' : ''}`} aria-hidden={!buyOffscreen}>
+        <div className="buy-bar-info">
+          <strong>{product.name}</strong>
+          <span>{formatPrice(product.price_cents)}</span>
+        </div>
+        <button type="button" className="btn btn-orange btn-sm" disabled={product.stock === 0} onClick={addToCart}>
+          {product.stock === 0 ? 'SOLD OUT' : added ? 'ADDED ✓' : 'ADD TO CART'}
+        </button>
       </div>
     </div>
   )

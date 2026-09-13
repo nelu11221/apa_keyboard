@@ -39,6 +39,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; letter-spac
 p { margin: 0; }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; }
+a, button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+body.menu-open { overflow: hidden; }
 input, select, textarea { font-family: inherit; font-size: 14px; }
 code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--pill); padding: 0.1em 0.4em; border-radius: 4px; }
 .muted { color: var(--muted); }
@@ -81,8 +83,13 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .nav-links a { font-size: 12.5px; color: var(--ink-2); }
 .nav-links a:hover, .nav-links a.active { color: var(--ink); }
 .nav-actions { justify-self: end; display: flex; align-items: center; gap: 14px; }
-.nav-links-mobile { display: none; }
 .nav-cart { position: relative; display: inline-flex; padding: 6px; color: var(--ink); }
+.nav-burger { display: none; }
+.nav-sheet { display: none; }
+.hero-chips { display: none; }
+.hero-slide-info { display: none; }
+.hero-swipe { display: none; }
+.buy-bar { display: none; }
 .nav-cart-count {
   position: absolute; top: -2px; right: -4px; min-width: 16px; height: 16px; padding: 0 4px;
   background: var(--orange); color: #fff; border-radius: 999px; font-size: 10px; font-weight: 700;
@@ -441,9 +448,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .hero-tag-right-bottom { display: none; }
   .statement, .more-grid, .keycaps-grid, .switches-head, .keycaps-head, .product-layout, .cart-layout, .footer, .admin-grid-2 { grid-template-columns: 1fr; }
   .benefits-grid { grid-template-columns: 1fr 1fr; }
-  .explode-label { position: static; display: inline-flex; margin: 4px; opacity: 1 !important; transform: none !important; }
-  .explode-label i { display: none; }
-  .explode-labels-mobile { display: flex; flex-wrap: wrap; justify-content: center; }
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
   .admin { grid-template-columns: 1fr; }
   .admin-side { position: static; height: auto; }
@@ -541,6 +545,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .explode-head h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 400; letter-spacing: -0.04em; }
 .explode-intro { text-align: center; max-width: 560px; font-size: 14px; color: var(--ink-2); line-height: 1.6; }
 .explode-stage { position: relative; width: 100%; max-width: 1180px; align-self: center; display: grid; place-items: center; }
+.explode-labels { display: contents; }
 .explode-figure { position: relative; width: min(1100px, 78vw); aspect-ratio: 16 / 9; max-height: 74vh; }
 .explode-figure img { position: absolute; left: 50%; top: 50%; display: block; }
 /* clipul generat: acoperă figura; cât timp nu e încărcat, rămân imaginile de dedesubt */
@@ -582,96 +587,158 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .explode-label i { display: block; width: clamp(40px, 8vw, 120px); border-top: 1px dashed #9c9a94; }
 .explode-hint { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); opacity: calc(1 - clamp(0, calc(var(--p) / 0.2), 1)); }
 @media (max-width: 1000px) {
-  .home section.explode-scroll { height: auto; }
-  .explode-sticky { position: static; height: auto; }
-  .explode-figure { width: min(1100px, 92vw); max-height: none; }
-  .explode-label { position: static; }
+  .home section.explode-scroll { height: 240svh; }
+  .explode-sticky { height: 100svh; padding: 28px 20px 20px; grid-template-rows: auto auto 1fr auto; row-gap: 14px; }
+  .explode-stage { display: contents; }
+  .explode-figure { width: min(1100px, 92vw); max-height: none; justify-self: center; }
+  /* etichetele: listă compactă sub figură, apar tot pe rând (--p), fără liniuțe */
+  .explode-labels { display: flex; flex-wrap: wrap; justify-content: center; align-content: start; gap: 6px; width: 100%; }
+  .explode-label { position: static; transform: none !important; }
+  .explode-label { position: static; transform: none !important; }
+  .explode-label i { display: none; }
+  .explode-label span { padding: 8px 14px; font-size: 12px; }
 }
 
 
 /* ============================================================
-   Mobil
+   Mobil (≤ 760px): aceleași efecte, gândite pentru deget
    ============================================================ */
 @media (max-width: 760px) {
-  /* nav: logo + acțiuni pe primul rând, linkurile pe al doilea */
-  .nav { grid-template-columns: auto 1fr; row-gap: 10px; padding: 14px 16px 10px; }
-  .nav-links { display: none; }
-  .nav-links-mobile {
-    grid-column: 1 / -1; display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
-    margin: 0 -16px; padding: 0 16px;
-  }
-  .nav-links-mobile::-webkit-scrollbar { display: none; }
-  .nav-links-mobile a { flex: 0 0 auto; padding: 7px 12px; border-radius: 999px; background: var(--pill); font-size: 12.5px; color: var(--ink-2); white-space: nowrap; }
-  .nav-links-mobile a.active { background: var(--dark); color: #fff; }
-  .nav-actions { justify-self: end; gap: 8px; }
-  .btn-sm { padding: 10px 14px; }
+  body { font-size: 15px; }
+  input, select, textarea { font-size: 16px; } /* sub 16px iOS face zoom la focus */
+  .btn { padding: 15px 22px; }
+  .btn-sm { padding: 11px 14px; }
 
-  /* hero */
-  .hero { padding-top: 24px !important; }
-  .hero-inner { padding: 12px 0 24px; background-image: none; }
-  .hero h1 { font-size: 44px; }
-  .hero-sub { font-size: 13.5px; margin-top: 18px; }
-  .hero-actions { flex-direction: column; gap: 10px; }
+  /* ---- nav: bară fixă sus + meniu pe tot ecranul ---- */
+  .nav {
+    position: sticky; top: 0; z-index: 40; grid-template-columns: auto 1fr; padding: 12px 16px;
+    background: var(--bg); box-shadow: 0 1px 0 rgba(19,19,19,0.06);
+    /* fără backdrop-filter aici: ar transforma bara în containerul panoului fix de meniu */
+    transition: transform 0.28s ease;
+  }
+  .nav.is-hidden { transform: translateY(-100%); }
+  .nav-links { display: none; }
+  .nav-actions { justify-self: end; gap: 6px; }
+  .nav-shop { display: none; }
+  .nav-cart { padding: 10px; }
+  .nav-burger {
+    display: grid; gap: 5px; width: 44px; height: 44px; padding: 0; place-content: center;
+    border: none; background: transparent; cursor: pointer;
+  }
+  .nav-burger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform 0.25s ease, opacity 0.2s ease; }
+  .nav.is-open .nav-burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav.is-open .nav-burger span:nth-child(2) { opacity: 0; }
+  .nav.is-open .nav-burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-sheet {
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: fixed; left: 0; right: 0; top: 68px; bottom: 0; z-index: 39; padding: 12px 20px calc(24px + env(safe-area-inset-bottom));
+    background: var(--bg); transform: translateY(-8px); opacity: 0; visibility: hidden;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+  }
+  .nav.is-open .nav-sheet { opacity: 1; visibility: visible; transform: none; }
+  .nav-sheet-links { display: grid; }
+  .nav-sheet-link {
+    display: flex; align-items: center; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line);
+    font-family: var(--font-display); font-size: 28px; font-weight: 400; letter-spacing: -0.03em;
+  }
+  .nav-sheet-link.active { color: var(--orange); }
+  .nav-sheet-link-muted { font-size: 18px; color: var(--muted); border-bottom: none; }
+  .nav-sheet-count { font-family: var(--font-body); font-size: 12px; font-weight: 600; background: var(--orange); color: #fff; padding: 3px 9px; border-radius: 999px; }
+
+  /* ---- hero ---- */
+  .hero { padding-top: 22px !important; }
+  .hero-inner { padding: 8px 0 20px; background-image: none; }
+  .hero-tag { display: none; }
+  .hero-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 18px; }
+  .hero-chips span {
+    display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--line); font-size: 10px; letter-spacing: 0.08em; font-weight: 600; color: var(--ink-2);
+  }
+  .hero-chips svg { width: 12px; height: 12px; }
+  .hero h1 { font-size: clamp(42px, 12.5vw, 52px); }
+  .hero-sub { font-size: 14px; margin-top: 16px; }
+  .hero-actions { flex-direction: column; gap: 10px; margin-top: 22px; }
   .hero-actions .btn { width: 100%; }
 
-  /* banda de produse → carusel nativ cu swipe */
-  .home section.hero-scroller { height: auto; margin-top: 8px; }
-  .hero-scroller-sticky { position: relative; height: auto; overflow: visible; padding-bottom: 34px; }
-  .hero-track {
-    overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
-    transform: none !important;
-  }
+  /* ---- banda de produse: carusel cu swipe, hotspot-uri la atingere ---- */
+  .home section.hero-scroller { height: auto; margin-top: 4px; }
+  .hero-scroller-sticky { position: relative; height: auto; overflow: visible; padding-bottom: 66px; }
+  .hero-track { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; transform: none !important; }
   .hero-track::-webkit-scrollbar { display: none; }
-  .hero-scroll-slide { scroll-snap-align: start; height: auto; min-height: 380px; padding: 32px 16px 16px; gap: 14px; }
+  .hero-scroll-slide { scroll-snap-align: start; scroll-snap-stop: always; height: auto; min-height: 0; padding: 30px 16px 0; gap: 12px; align-content: start; }
   .hero-slide-figure { max-width: 100%; }
-  .hero-slide-media img { max-height: 46vh; }
-  .hero-slide-media .pic { height: 260px; }
-  .hero-slide-name { font-size: 18px; }
-  .hero-dots { bottom: 12px; }
-  .hotspot-tip { width: 170px; font-size: 11px; }
+  .hero-slide-media { display: grid; place-items: center; min-height: 240px; }
+  .hero-slide-media img { max-height: 44vh; }
+  .hero-slide-media .pic { height: 230px; }
+  .hero-slide-caption { flex-direction: column; gap: 4px; text-align: center; }
+  .hero-slide-name { font-size: 20px; }
+  .hotspot { width: 40px; height: 40px; margin: -20px 0 0 -20px; }
+  .hotspot-ring::after { inset: 8px; }
+  .hotspot-tip { display: none; }
+  .hero-slide-info {
+    display: grid; gap: 3px; width: 100%; min-height: 66px; padding: 12px 16px; border-radius: 12px;
+    background: rgba(255,255,255,0.16); color: #fff; font-size: 13px; line-height: 1.45; text-align: center;
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  }
+  .hero-slide-info strong { font-size: 14px; }
+  .hero-slide-info span { opacity: 0.85; }
+  .hero-slide-info-hint { align-self: center; opacity: 0.7; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .hero-dots { bottom: 44px; }
+  .hero-swipe {
+    display: flex; position: absolute; left: 0; right: 0; bottom: 8px; align-items: center; justify-content: center; gap: 14px;
+    color: rgba(255,255,255,0.85); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+    transition: opacity 0.3s ease;
+  }
+  .hero-swipe.is-hidden span { opacity: 0; }
+  .hero-arrow {
+    width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.7); background: rgba(255,255,255,0.14); color: #fff;
+    font-size: 15px; cursor: pointer; display: grid; place-items: center;
+  }
+  .hero-arrow:disabled { opacity: 0.3; }
 
-  /* secțiuni generale */
+  /* ---- secțiuni generale ---- */
   .home section { padding-left: 16px; padding-right: 16px; }
-  .pills-row { padding-top: 28px !important; gap: 8px; justify-content: flex-start; }
-  .pill { padding: 10px 14px; font-size: 11px; }
-  .statement { padding-top: 40px !important; gap: 18px; }
+  .pills-row { padding-top: 26px !important; gap: 8px; justify-content: flex-start; }
+  .pill { padding: 11px 14px; font-size: 11px; }
+  .statement { padding-top: 40px !important; gap: 16px; }
   .statement h2 { font-size: 30px; }
   .statement p { font-size: 17px; }
   .section-head h2 { font-size: 30px; }
   .more, .benefits, .switches, .keycaps, .studio { padding-top: 64px !important; }
   .more-grid { margin-top: 24px; }
   .more-visual { min-height: 300px; }
-  .card-icon { margin-bottom: 20px; }
-  .benefit-icon { margin-bottom: 20px; }
+  .card-icon, .benefit-icon { margin-bottom: 18px; }
 
-  /* vederea explodată: static, etichete sub imagine */
-  .home section.explode-scroll { margin-top: 48px; }
-  .explode-sticky { padding: 0 16px; grid-template-rows: auto auto auto; }
-  .explode-figure { width: 100%; }
-  .explode-stage { display: grid; gap: 10px; }
-  .explode-label { position: static; transform: none !important; opacity: 1 !important; margin: 4px 0; }
-  .explode-label i { display: none; }
-  .explode-hint { display: none; }
-  .explode-head h2 { font-size: 28px; }
+  /* ---- vederea explodată: lipicioasă și pe mobil, figura mărită (marginile ies din ecran) ---- */
+  .home section.explode-scroll { margin-top: 40px; height: 220svh; }
+  .explode-sticky { padding: 22px 16px 16px; row-gap: 10px; overflow: hidden; grid-template-columns: minmax(0, 1fr); }
+  .explode-head { gap: 8px; }
+  .explode-head h2 { font-size: 27px; }
+  .explode-intro { font-size: 13px; line-height: 1.5; }
+  .explode-figure { width: min(132vw, calc((100svh - 330px) * 16 / 9)); max-width: none; }
+  .explode-label span { padding: 8px 12px; font-size: 11.5px; }
+  .explode-label small { font-size: 10px; }
+  .explode-hint { font-size: 10px; }
 
-  /* switch-uri */
+  /* ---- switch-uri ---- */
   .switches-head, .keycaps-head { grid-template-columns: 1fr; gap: 12px; margin: 16px 0 18px; }
-  .switch-list li a { padding: 12px 12px; gap: 14px; }
+  .switch-list li a { padding: 14px 12px; gap: 14px; min-height: 64px; }
   .switch-name { font-size: 22px; }
   .switch-list li.active a { padding-right: 130px; }
   .switch-thumb { width: 110px; height: 72px; right: 10px; }
 
-  /* keycaps + film */
+  /* ---- keycaps + film (din margine în margine) ---- */
   .keycaps-grid { grid-template-columns: 1fr; gap: 18px; }
   .keycaps-text p { margin-bottom: 16px; }
-  .keycaps-film-tag { left: 10px; bottom: 10px; font-size: 10px; padding: 7px 10px; }
+  .keycaps-film { margin: 0 -16px; border-radius: 0; box-shadow: none; }
+  .keycaps-film-tag { left: 14px; bottom: 12px; font-size: 10px; padding: 8px 12px; }
 
-  /* studio */
+  /* ---- studio ---- */
   .studio-head h2 { font-size: 30px; }
   .studio-actions { flex-direction: column; gap: 14px; }
   .studio-actions .btn { width: 100%; }
 
-  /* CTA + footer */
+  /* ---- CTA + footer ---- */
   .cta { margin-top: 64px !important; padding: 44px 16px 40px !important; }
   .cta h2 { font-size: 30px; }
   .footer { padding: 0 16px; margin-top: 24px; }
@@ -682,13 +749,13 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .footer-card h4 { margin-top: 28px; }
   .footer-bottom { margin-top: 30px; flex-direction: column; align-items: flex-start; }
 
-  /* shop */
-  .shop, .product-page, .cart-page { padding: 20px 16px 56px; }
+  /* ---- shop ---- */
+  .shop, .product-page, .cart-page { padding: 18px 16px 56px; }
   .shop-head h1 { font-size: 34px; }
-  .shop-toolbar { margin: 18px 0 14px; }
+  .shop-toolbar { margin: 16px 0 14px; }
   .shop-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
   .shop-tabs::-webkit-scrollbar { display: none; }
-  .shop-tab { flex: 0 0 auto; }
+  .shop-tab { flex: 0 0 auto; padding: 11px 16px; }
   .shop-search { min-width: 0; width: 100%; }
   .product-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .product-media { height: 150px; padding: 14px; }
@@ -696,26 +763,39 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .product-body h3 { font-size: 14px; }
   .product-body p { font-size: 11.5px; }
   .product-foot { padding: 10px 12px 14px; flex-direction: column; align-items: stretch; gap: 8px; }
-  .product-foot .btn { width: 100%; }
+  .product-foot .btn { width: 100%; padding: 12px 14px; }
   .product-price { font-size: 14px; }
 
-  /* produs */
-  .product-layout { gap: 22px; }
-  .product-gallery { min-height: 260px; padding: 20px; }
+  /* ---- produs: bara de cumpărare rămâne la îndemână jos ---- */
+  .product-layout { gap: 20px; }
+  .product-gallery { min-height: 250px; padding: 18px; }
   .product-info h1 { font-size: 32px; }
-  .product-buy { flex-wrap: wrap; }
+  .product-buy { gap: 10px; }
   .product-buy .btn { flex: 1 1 auto; }
+  .buy-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(242,241,237,0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--line);
+    transform: translateY(100%); transition: transform 0.25s ease;
+  }
+  .buy-bar.is-visible { transform: none; }
+  .buy-bar-info { display: grid; line-height: 1.25; }
+  .buy-bar-info strong { font-family: var(--font-display); font-size: 15px; font-weight: 500; }
+  .buy-bar-info span { font-size: 13px; color: var(--ink-2); }
+  .buy-bar .btn { padding: 13px 18px; white-space: nowrap; }
+  .qty button { width: 42px; height: 48px; }
   .option-grid { grid-template-columns: repeat(3, 1fr); }
   .specs div { grid-template-columns: 110px 1fr; }
 
-  /* coș */
+  /* ---- coș ---- */
   .cart-page h1 { font-size: 32px; }
-  .cart-item { grid-template-columns: 64px 1fr; gap: 10px 12px; padding: 14px; }
+  .cart-item { grid-template-columns: 64px 1fr auto; gap: 10px 12px; padding: 14px; }
   .cart-thumb { width: 64px; height: 48px; }
+  .cart-info { grid-column: 2 / 4; }
   .cart-item .qty { grid-column: 2; justify-self: start; }
-  .cart-line { grid-column: 2; text-align: left; }
+  .cart-line { grid-column: 3; align-self: center; }
 
-  /* admin: bara laterală devine un antet compact cu meniu derulabil */
+  /* ---- admin: bara laterală devine un antet compact cu meniu derulabil ---- */
   .admin-side { padding: 16px 16px 12px; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px 12px; }
   .admin-brand { margin-bottom: 0; }
   .admin-back { margin-top: 0; margin-left: auto; }
@@ -729,6 +809,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .stat-grid { grid-template-columns: 1fr 1fr; }
   .admin-head h1 { font-size: 24px; }
   .admin-toolbar .admin-input { min-width: 0; width: 100%; }
-  .table { font-size: 12px; }
-  .table th, .table td { padding: 8px 6px; }
+}
+
+/* fără animații pentru cine a cerut asta din sistem */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hotspot-ring { animation: none; }
 }
