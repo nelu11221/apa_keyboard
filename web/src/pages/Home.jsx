@@ -49,21 +49,50 @@ const BENEFITS = [
 export default function Home() {
   const [activeSwitch, setActiveSwitch] = useState(0)
   const filmRef = useRef(null)
+  const [filmNeedsTap, setFilmNeedsTap] = useState(false)
 
   // Clipul de reclamă din secțiunea de keycaps rulează doar cât e vizibil.
+  // Pe iOS redarea automată merge doar dacă atributele muted/playsinline sunt
+  // chiar în DOM (React setează doar proprietatea `muted`); dacă telefonul tot
+  // refuză (ex. Low Power Mode), arătăm un buton ▶ și pornim la atingere.
   useEffect(() => {
     const video = filmRef.current
     if (!video) return undefined
+    video.muted = true
+    video.defaultMuted = true
+    video.setAttribute('muted', '')
+    video.setAttribute('playsinline', '')
+    video.setAttribute('webkit-playsinline', '')
+
+    function tryPlay() {
+      const attempt = video.play()
+      if (attempt && attempt.catch) {
+        attempt.then(() => setFilmNeedsTap(false)).catch(() => setFilmNeedsTap(true))
+      }
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) video.play().catch(() => {})
+        if (entry.isIntersecting) tryPlay()
         else video.pause()
       },
-      { threshold: 0.4 },
+      { threshold: 0.3 },
     )
     observer.observe(video)
-    return () => observer.disconnect()
+    // prima atingere oriunde pe pagină deblochează redarea pe telefoanele stricte
+    const unlock = () => { if (video.paused && video.getBoundingClientRect().top < window.innerHeight) tryPlay() }
+    window.addEventListener('touchend', unlock, { passive: true, once: true })
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('touchend', unlock)
+    }
   }, [])
+
+  function playFilm() {
+    const video = filmRef.current
+    if (!video) return
+    video.muted = true
+    video.play().then(() => setFilmNeedsTap(false)).catch(() => {})
+  }
 
   return (
     <div className="home">
@@ -231,9 +260,14 @@ export default function Home() {
               poster={images.heroKeyboard || undefined}
               muted
               loop
+              autoPlay
               playsInline
-              preload="metadata"
+              preload="auto"
+              onPlaying={() => setFilmNeedsTap(false)}
             />
+            {filmNeedsTap && (
+              <button type="button" className="film-play" onClick={playFilm} aria-label="Play the film">▶</button>
+            )}
             <Link to="/product/nexa-75" className="keycaps-film-tag">NEXA 75 · The film <ArrowRight /></Link>
           </div>
         </div>
