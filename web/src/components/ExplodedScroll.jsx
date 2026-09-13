@@ -46,6 +46,7 @@ export default function ExplodedScroll({
     // ecran și îl lăsăm pe ultimul cadru; dacă ieși în sus, se resetează.
     const touch = window.matchMedia('(hover: none)').matches
     let started = false
+    let rewindTimer = 0
 
     let frame = 0
     function update() {
@@ -75,9 +76,17 @@ export default function ExplodedScroll({
           player.setAttribute('muted', '')
           player.play().catch(() => setVideoReady(false)) // fără redare → rămân imaginile
         } else if (progress === 0 && started) {
+          // întoarcere lină: clipul se estompează peste imaginea produsului
+          // întreg, abia apoi sare la începutul clipului (identic cu imaginea)
           started = false
           player.pause()
-          player.currentTime = 0
+          const figure = stage.querySelector('.explode-figure')
+          figure?.classList.add('is-rewinding')
+          clearTimeout(rewindTimer)
+          rewindTimer = setTimeout(() => {
+            player.currentTime = 0
+            figure?.classList.remove('is-rewinding')
+          }, 600)
         }
         return
       }
@@ -97,6 +106,7 @@ export default function ExplodedScroll({
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
       if (frame) cancelAnimationFrame(frame)
+      clearTimeout(rewindTimer)
     }
   }, [])
 

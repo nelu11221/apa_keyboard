@@ -558,6 +558,9 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .explode-figure.has-video .explode-video { opacity: 1; }
 .explode-figure.has-video .explode-assembled,
 .explode-figure.has-video .explode-open { opacity: 0 !important; }
+/* pe touch, la întoarcerea deasupra secțiunii: clipul se estompează peste imaginea întreagă */
+.explode-figure.has-video.is-rewinding .explode-video { opacity: 0; transition: opacity 0.55s ease; }
+.explode-figure.has-video.is-rewinding .explode-assembled { opacity: 1 !important; transform: translate(-50%, -50%); transition: none; }
 /* tastatura întreagă: vizibilă la început, dispare în prima treime a scroll-ului */
 .explode-assembled {
   width: 100%; transform: translate(-50%, -50%) scale(calc(1 + 0.05 * clamp(0, calc(var(--p) / 0.35), 1)));
