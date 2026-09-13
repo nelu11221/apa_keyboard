@@ -15,6 +15,7 @@ import Home from './pages/Home.jsx'
 import Product from './pages/Product.jsx'
 import Shop from './pages/Shop.jsx'
 import Success from './pages/Success.jsx'
+import { warmUpApi } from './api.js'
 
 function StoreLayout({ children }) {
   return (
@@ -53,6 +54,8 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  useEffect(() => { warmUpApi() }, [])
+
   return (
     <ErrorBoundary>
       <ScrollToTop />

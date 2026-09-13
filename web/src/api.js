@@ -28,6 +28,13 @@ async function request(path, options = {}) {
   return body
 }
 
+// Trezește backend-ul (Render adoarme serviciul gratuit după 15 min): se
+// cheamă la deschiderea site-ului, ca până ajunge vizitatorul în Shop
+// serverul să fie deja pornit. Răspunsul nu ne interesează.
+export function warmUpApi() {
+  fetch(`${API_BASE}/api/health`, { cache: 'no-store' }).catch(() => {})
+}
+
 export const api = {
   products: (category) => request(category ? `/api/products?category=${encodeURIComponent(category)}` : '/api/products'),
   product: (slug) => request(`/api/products/${encodeURIComponent(slug)}`),
