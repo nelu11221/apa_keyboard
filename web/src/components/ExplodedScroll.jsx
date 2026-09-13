@@ -40,6 +40,13 @@ export default function ExplodedScroll({
     const stage = stageRef.current
     if (!section || !stage) return undefined
 
+    // Pe ecrane tactile (iOS mai ales) derularea clipului cadru cu cadru prin
+    // currentTime nu e de încredere: browserul nu preîncarcă și rămâne pe primul
+    // cadru. Acolo redăm clipul normal (mut, inline) când secțiunea intră în
+    // ecran și îl lăsăm pe ultimul cadru; dacă ieși în sus, se resetează.
+    const touch = window.matchMedia('(hover: none)').matches
+    let started = false
+
     let frame = 0
     function update() {
       frame = 0
@@ -60,7 +67,21 @@ export default function ExplodedScroll({
       // Clipul e "derulat" de scroll: poziția din clip = progresul secțiunii,
       // în primele 60%; restul e rezervat apariției etichetelor.
       const player = videoRef.current
-      if (player && player.duration) {
+      if (!player) return
+      if (touch) {
+        if (progress > 0.03 && !started) {
+          started = true
+          player.muted = true
+          player.setAttribute('muted', '')
+          player.play().catch(() => setVideoReady(false)) // fără redare → rămân imaginile
+        } else if (progress === 0 && started) {
+          started = false
+          player.pause()
+          player.currentTime = 0
+        }
+        return
+      }
+      if (player.duration) {
         const t = Math.min(1, progress / 0.6) * (player.duration - 0.05)
         if (Math.abs(player.currentTime - t) > 0.02) player.currentTime = t
       }
@@ -97,7 +118,9 @@ export default function ExplodedScroll({
                 muted
                 playsInline
                 preload="auto"
+                poster={assembled || undefined}
                 onLoadedMetadata={() => setVideoReady(true)}
+                onError={() => setVideoReady(false)}
               />
             )}
             <img className="explode-assembled" src={assembled} alt="" aria-hidden="true" />

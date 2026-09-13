@@ -19,6 +19,8 @@ export default function StudioSection() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return undefined
+    video.muted = true
+    video.setAttribute('muted', '')
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) video.play().catch(() => {})

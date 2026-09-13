@@ -59,6 +59,15 @@ export default function Product() {
     api.products().then((list) => setAllProducts(Array.isArray(list) ? list : [])).catch(() => {})
   }, [slug])
 
+  // iOS cere atributul `muted` în DOM pentru autoplay; React setează doar proprietatea
+  useEffect(() => {
+    const player = videoRef.current
+    if (!player) return
+    player.muted = true
+    player.setAttribute('muted', '')
+    player.play().catch(() => {})
+  }, [view, product])
+
   const isKeyboard = product?.category === 'keyboards'
   const video = product ? videoFor(product) : null
   const switchOptions = useMemo(() => allProducts.filter((p) => p.category === 'switches'), [allProducts])
