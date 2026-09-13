@@ -551,7 +551,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .explode-intro { text-align: center; max-width: 560px; font-size: 14px; color: var(--ink-2); line-height: 1.6; }
 .explode-stage { position: relative; width: 100%; max-width: 1180px; align-self: center; display: grid; place-items: center; }
 .explode-labels { display: contents; }
-.explore-desktop { display: contents; }
 .explode-figure { position: relative; width: min(1100px, 78vw); aspect-ratio: 16 / 9; max-height: 74vh; }
 .explode-figure img { position: absolute; left: 50%; top: 50%; display: block; }
 /* clipul generat: acoperă figura; cât timp nu e încărcat, rămân imaginile de dedesubt */
@@ -719,7 +718,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .card-icon, .benefit-icon { margin-bottom: 18px; }
 
   /* ---- vederile explodate: pe telefon, tastatura lipsește, switch-ul și mouse-ul sunt imagini statice ---- */
-  .explore-desktop { display: none; }
   .home section.explode-scroll { margin-top: 48px; height: auto; }
   .explode-scroll.is-static .explode-sticky {
     position: static; height: auto; padding: 0 16px; row-gap: 16px; overflow: visible; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto;
@@ -732,7 +730,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .explode-scroll.is-static .explode-assembled { display: none; }
   .explode-scroll.is-static .explode-open {
     position: static; opacity: 1; transform: none; -webkit-mask-image: none; mask-image: none; filter: none;
-    width: auto; max-width: 100%; height: min(68vh, 560px); object-fit: contain;
+    width: auto; max-width: 100%; height: auto; max-height: min(68vh, 560px); object-fit: contain;
   }
   .explode-scroll.is-static .explode-label { opacity: 1; transform: none; }
   .explode-label span { padding: 8px 12px; font-size: 11.5px; }

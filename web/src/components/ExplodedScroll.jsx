@@ -25,6 +25,7 @@ export default function ExplodedScroll({
   assembled = images.heroKeyboard,
   exploded = images.explodedKeyboard,
   staticImage = null, // varianta cu fundal transparent, folosită pe mobil (static)
+  staticHeading = null, // titlu arătat doar în varianta statică (mobil)
   video = images.explodedVideo,
   labels = KEYBOARD_LABELS,
   alt = 'Exploded view of the NEXA keyboard',
@@ -124,7 +125,7 @@ export default function ExplodedScroll({
     <section ref={sectionRef} className={`explode-scroll ${isStatic ? 'is-static' : ''}`} id={id}>
       <div ref={stageRef} className="explode-sticky">
         <div className="explode-head">
-          {heading && <h2>{heading}</h2>}
+          {(isStatic && staticHeading ? staticHeading : heading) && <h2>{isStatic && staticHeading ? staticHeading : heading}</h2>}
           <p className="explode-intro">{intro}</p>
         </div>
 

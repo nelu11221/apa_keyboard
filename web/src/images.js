@@ -13,6 +13,7 @@ export const images = {
   explodedVideo: '/images/keyboard-explode.mp4',      // clip generat (Higgsfield): tastatura se desface în straturi; derulat de scroll
   switchAssembled: '/images/switch-assembled.png',     // secțiunea "Inside the switch": switch-ul întreg (16:9)
   switchExploded: '/images/switch-exploded.png',      // switch-ul desfăcut în componente (16:9)
+  explodedKeyboardCut: '/images/keyboard-exploded-cut.png', // tastatura desfăcută, fundal transparent (mobil, static)
   switchExplodedCut: '/images/switch-exploded-cut.png', // același, fundal transparent (imaginea statică de pe mobil)
   switchVideo: '/images/switch-explode.mp4',         // clip: switch-ul se desface (derulat de scroll)
   mouseExploded: '/images/mouse-exploded.png',       // secțiunea mouse: desfăcut în componente (16:9)

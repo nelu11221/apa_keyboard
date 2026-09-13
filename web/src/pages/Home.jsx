@@ -173,10 +173,8 @@ export default function Home() {
       </section>
 
       {/* ---------- Exploded view (Nexa) — se deschide la scroll ---------- */}
-      {/* pe mobil, secțiunea cinematică a tastaturii nu se afișează (vezi CSS .explore-desktop) */}
-      <div className="explore-desktop">
-        <ExplodedScroll />
-      </div>
+      {/* pe mobil: static — titlu, imaginea desfăcută și etichetele (vezi ExplodedScroll) */}
+      <ExplodedScroll staticImage={images.explodedKeyboardCut} staticHeading="Inside the keyboard." />
 
       {/* ---------- Benefits (Nexa) ---------- */}
       <section className="benefits" id="benefits">

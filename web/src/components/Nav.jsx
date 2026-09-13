@@ -7,9 +7,7 @@ import { Cart, Logo } from './Icons.jsx'
 // Când ești deja pe pagina principală cu același hash în URL, router-ul nu
 // mai schimbă nimic — derulăm noi la secțiune.
 function scrollToHash(hash) {
-  let target = document.getElementById(hash)
-  if (target && target.getBoundingClientRect().height === 0) target = document.getElementById('benefits') || target
-  target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 const LINKS = [
