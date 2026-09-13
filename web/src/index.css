@@ -722,10 +722,12 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .explode-head { gap: 8px; }
   .explode-head h2 { font-size: 27px; }
   .explode-intro { font-size: 13px; line-height: 1.5; }
-  .explode-scroll.is-static .explode-figure { width: 100%; max-width: none; aspect-ratio: 16 / 9; }
+  /* imaginea decupată își păstrează proporția și umple înălțimea disponibilă */
+  .explode-scroll.is-static .explode-figure { width: 100%; max-width: none; aspect-ratio: auto; display: grid; place-items: center; }
   .explode-scroll.is-static .explode-assembled { display: none; }
   .explode-scroll.is-static .explode-open {
-    opacity: 1; transform: translate(-50%, -50%); -webkit-mask-image: none; mask-image: none; filter: none;
+    position: static; opacity: 1; transform: none; -webkit-mask-image: none; mask-image: none; filter: none;
+    width: auto; max-width: 100%; height: min(68vh, 560px); object-fit: contain;
   }
   .explode-scroll.is-static .explode-label { opacity: 1; transform: none; }
   .explode-label span { padding: 8px 12px; font-size: 11.5px; }
