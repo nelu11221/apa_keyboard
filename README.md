@@ -118,7 +118,16 @@ Setează în Netlify → *Site configuration → Environment variables*:
 4. În Netlify → *Environment variables*: `VITE_API_BASE` = acel URL → *Trigger deploy*.
 
 Notă: pe planul gratuit Render serviciul „adoarme" după 15 min fără trafic; prima cerere durează
-~30–60 s. Baza de date SQLite e locală containerului (se re-populează din seed la fiecare deploy).
+~30–60 s (`.github/workflows/keep-alive.yml` îl ține treaz cu un ping la 10 min).
+
+**Baza de date (Supabase Postgres, gratuit):** fără `DATABASE_URL`, serverul folosește SQLite local
+containerului, care se pierde la fiecare deploy. Pentru date persistente:
+
+1. [supabase.com](https://supabase.com) → *New project* (notează parola bazei de date).
+2. În proiect → butonul *Connect* (sus) → *Session pooler* → copiază URI-ul
+   (`postgresql://postgres.<ref>:<parola>@aws-0-<regiune>.pooler.supabase.com:5432/postgres`).
+3. Render → `nexa-api` → *Environment* → `DATABASE_URL` = acel URI → *Save* (serviciul repornește).
+   Tabelele și cele 19 produse se creează singure la prima pornire.
 
 ## Endpoint-uri principale
 
