@@ -17,6 +17,8 @@ class Settings:
     stripe_secret_key: str
     stripe_webhook_secret: str
     frontend_url: str
+    admin_password: str
+    admin_secret: str
 
 
 def _load_settings() -> Settings:
@@ -29,6 +31,10 @@ def _load_settings() -> Settings:
         stripe_secret_key=os.getenv("STRIPE_SECRET_KEY", ""),
         stripe_webhook_secret=os.getenv("STRIPE_WEBHOOK_SECRET", ""),
         frontend_url=os.getenv("FRONTEND_URL", "http://localhost:5173"),
+        # Parola panoului de administrare. Dacă lipsește, panoul nu poate fi accesat deloc.
+        admin_password=os.getenv("ADMIN_PASSWORD", ""),
+        # Cheia cu care se semnează tokenurile de sesiune; opțională (derivată din parolă dacă lipsește).
+        admin_secret=os.getenv("ADMIN_SECRET", ""),
     )
 
 

@@ -97,7 +97,6 @@ export default function Nav() {
           <NavLink to="/cart" className="nav-sheet-link" onClick={() => setOpen(false)}>
             Cart{cart.count > 0 && <span className="nav-sheet-count">{cart.count}</span>}
           </NavLink>
-          <NavLink to="/admin" className="nav-sheet-link nav-sheet-link-muted" onClick={() => setOpen(false)}>Admin</NavLink>
         </nav>
         <Link to="/shop" className="btn btn-orange btn-block" onClick={() => setOpen(false)}>SHOP NOW</Link>
       </div>

@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.orm import Session
 
 from .. import models, schemas
+from ..auth import is_admin_request
 from ..database import get_db
 from ..engine_client import EngineError, run_search
 from ..search_index import build_order_corpus, build_product_corpus, normalize_for_search
@@ -15,11 +16,15 @@ def search(
     q: str = Query(..., min_length=1, description="Termenul căutat"),
     algorithm: str | None = Query(None, pattern="^(kmp|bmh|rk)$"),
     scope: str = Query("products", pattern="^(products|orders)$"),
+    request: Request = None,
     db: Session = Depends(get_db),
 ):
     # Magazinul nu trimite algoritmul — folosește cel setat din admin.
-    # Admin-ul îl trimite explicit când compară algoritmii.
-    chosen_algorithm = algorithm or get_setting(db, "search_algorithm")
+    # Admin-ul îl trimite explicit când compară algoritmii; căutarea în comenzi
+    # (date personale ale clienților) e permisă doar administratorului.
+    if scope == "orders" and not is_admin_request(request):
+        raise HTTPException(status_code=401, detail="Autentificare necesară.")
+    chosen_algorithm = (algorithm if is_admin_request(request) else None) or get_setting(db, "search_algorithm")
 
     corpus = build_product_corpus(db) if scope == "products" else build_order_corpus(db)
     normalized_pattern = normalize_for_search(q)

@@ -4,11 +4,29 @@
 
 const API_BASE = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '')
 
+// Tokenul de sesiune al administratorului (emis de /api/admin/login), ținut în browser.
+const ADMIN_TOKEN_KEY = 'nexa_admin_token'
+export const adminSession = {
+  get: () => { try { return localStorage.getItem(ADMIN_TOKEN_KEY) } catch { return null } },
+  set: (token) => { try { localStorage.setItem(ADMIN_TOKEN_KEY, token) } catch { /* fără stocare */ } },
+  clear: () => { try { localStorage.removeItem(ADMIN_TOKEN_KEY) } catch { /* fără stocare */ } },
+}
+
 async function request(path, options = {}) {
+  const token = adminSession.get()
   const response = await fetch(`${API_BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
     ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(options.headers || {}),
+    },
   })
+  if (response.status === 401) {
+    // sesiunea de admin a expirat sau lipsește: panoul afișează ecranul de autentificare
+    adminSession.clear()
+    window.dispatchEvent(new Event('nexa-admin-logout'))
+  }
   if (response.status === 204) return null
   // Fără backend (ex. Netlify fără VITE_API_BASE), redirect-ul SPA răspunde
   // cu index.html la /api/... — nu e JSON, deci semnalăm clar, nu crăpăm.
@@ -69,6 +87,8 @@ export const api = {
   },
 
   admin: {
+    login: (password) => request('/api/admin/login', { method: 'POST', body: JSON.stringify({ password }) }),
+    session: () => request('/api/admin/session'),
     stats: () => request('/api/admin/stats'),
     searchLogs: (limit = 50) => request(`/api/admin/search-logs?limit=${limit}`),
     settings: () => request('/api/admin/settings'),

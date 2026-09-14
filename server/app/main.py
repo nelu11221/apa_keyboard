@@ -38,6 +38,7 @@ app.include_router(stripe_payments.router)
 app.include_router(benchmark.router)
 app.include_router(orders.router)
 app.include_router(admin.router)
+app.include_router(admin.public_router)
 
 
 @app.get("/api/health")

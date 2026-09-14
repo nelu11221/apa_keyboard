@@ -56,7 +56,7 @@ export default function Products() {
   }
 
   async function remove(product) {
-    if (!window.confirm(`Delete "${product.name}"?`)) return
+    if (!window.confirm(`Ștergi „${product.name}”?`)) return
     try {
       await api.admin.deleteProduct(product.id)
       load()
@@ -69,46 +69,46 @@ export default function Products() {
     <div>
       <div className="admin-head admin-head-row">
         <div>
-          <h1>Products</h1>
-          <p className="muted">{products.length} products in the catalogue.</p>
+          <h1>Produse</h1>
+          <p className="muted">{products.length} produse în catalog.</p>
         </div>
-        <button type="button" className="btn btn-orange btn-sm" onClick={startNew}>NEW PRODUCT</button>
+        <button type="button" className="btn btn-orange btn-sm" onClick={startNew}>PRODUS NOU</button>
       </div>
 
       {error && <p className="notice notice-error">{error}</p>}
 
       {editing !== null && (
         <form className="panel form-grid" onSubmit={save}>
-          <h3 className="span-2">{editing === 'new' ? 'New product' : 'Edit product'}</h3>
-          <label>Name<input required value={form.name} onChange={(e) => update('name', e.target.value)} /></label>
+          <h3 className="span-2">{editing === 'new' ? 'Produs nou' : 'Editează produsul'}</h3>
+          <label>Nume<input required value={form.name} onChange={(e) => update('name', e.target.value)} /></label>
           <label>Slug<input required value={form.slug} onChange={(e) => update('slug', e.target.value)} /></label>
-          <label>Tagline<input value={form.tagline} onChange={(e) => update('tagline', e.target.value)} /></label>
-          <label>Category
+          <label>Slogan<input value={form.tagline} onChange={(e) => update('tagline', e.target.value)} /></label>
+          <label>Categorie
             <select value={form.category} onChange={(e) => update('category', e.target.value)}>
               {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
           </label>
-          <label>Price (cents)<input type="number" min="0" required value={form.price_cents} onChange={(e) => update('price_cents', e.target.value)} /></label>
-          <label>Stock<input type="number" min="0" required value={form.stock} onChange={(e) => update('stock', e.target.value)} /></label>
-          <label>Badge<input value={form.badge} onChange={(e) => update('badge', e.target.value)} placeholder="New, Best seller…" /></label>
-          <label>Image key<input value={form.image_key} onChange={(e) => update('image_key', e.target.value)} placeholder="key from images.js" /></label>
-          <label>Accent
+          <label>Preț (cenți)<input type="number" min="0" required value={form.price_cents} onChange={(e) => update('price_cents', e.target.value)} /></label>
+          <label>Stoc<input type="number" min="0" required value={form.stock} onChange={(e) => update('stock', e.target.value)} /></label>
+          <label>Etichetă<input value={form.badge} onChange={(e) => update('badge', e.target.value)} placeholder="New, Best seller…" /></label>
+          <label>Cheie imagine<input value={form.image_key} onChange={(e) => update('image_key', e.target.value)} placeholder="cheie din images.js" /></label>
+          <label>Culoare accent
             <select value={form.accent} onChange={(e) => update('accent', e.target.value)}>
               {ACCENTS.map((a) => <option key={a} value={a}>{a}</option>)}
             </select>
           </label>
-          <label className="span-2">Description<textarea rows={3} value={form.description} onChange={(e) => update('description', e.target.value)} /></label>
-          <label className="span-2">Specs (one "Label: value" per line)<textarea rows={4} value={form.specs} onChange={(e) => update('specs', e.target.value)} /></label>
+          <label className="span-2">Descriere<textarea rows={3} value={form.description} onChange={(e) => update('description', e.target.value)} /></label>
+          <label className="span-2">Specificații (câte o linie „Etichetă: valoare”)<textarea rows={4} value={form.specs} onChange={(e) => update('specs', e.target.value)} /></label>
           <div className="span-2 form-actions">
-            <button type="button" className="btn btn-white btn-sm" onClick={() => setEditing(null)}>CANCEL</button>
-            <button type="submit" className="btn btn-dark btn-sm" disabled={saving}>{saving ? 'SAVING…' : 'SAVE'}</button>
+            <button type="button" className="btn btn-white btn-sm" onClick={() => setEditing(null)}>RENUNȚĂ</button>
+            <button type="submit" className="btn btn-dark btn-sm" disabled={saving}>{saving ? 'SE SALVEAZĂ…' : 'SALVEAZĂ'}</button>
           </div>
         </form>
       )}
 
       <section className="panel">
         <table className="table">
-          <thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Badge</th><th /></tr></thead>
+          <thead><tr><th>Nume</th><th>Categorie</th><th>Preț</th><th>Stoc</th><th>Etichetă</th><th /></tr></thead>
           <tbody>
             {products.map((product) => (
               <tr key={product.id}>
@@ -118,8 +118,8 @@ export default function Products() {
                 <td><span className={`tag ${product.stock === 0 ? 'tag-red' : product.stock <= 20 ? 'tag-amber' : 'tag-green'}`}>{product.stock}</span></td>
                 <td>{product.badge}</td>
                 <td className="row-actions">
-                  <button type="button" onClick={() => startEdit(product)}>Edit</button>
-                  <button type="button" className="danger" onClick={() => remove(product)}>Delete</button>
+                  <button type="button" onClick={() => startEdit(product)}>Editează</button>
+                  <button type="button" className="danger" onClick={() => remove(product)}>Șterge</button>
                 </td>
               </tr>
             ))}

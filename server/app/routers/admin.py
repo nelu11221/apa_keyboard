@@ -1,15 +1,38 @@
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+import time
+
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from .. import models, schemas
+from ..auth import LoginIn, LoginOut, check_password, issue_token, require_admin
+from ..config import settings
 from ..database import get_db
 from ..seed import get_setting
 
-router = APIRouter(prefix="/api/admin", tags=["admin"])
+router = APIRouter(prefix="/api/admin", tags=["admin"], dependencies=[Depends(require_admin)])
+# ruta de login e singura fără autentificare
+public_router = APIRouter(prefix="/api/admin", tags=["admin"])
+
+
+@public_router.post("/login", response_model=LoginOut)
+def login(payload: LoginIn):
+    if not check_password(payload.password):
+        # o mică întârziere descurajează ghicirea parolei prin încercări repetate
+        time.sleep(0.6)
+        raise HTTPException(status_code=401, detail="Parolă greșită.")
+    token, expires_at = issue_token()
+    return LoginOut(token=token, expires_at=expires_at)
+
+
+@public_router.get("/session")
+def session(request: Request):
+    """Spune dacă tokenul din antet e încă valid (folosit la deschiderea panoului)."""
+    from ..auth import is_admin_request
+    return {"authenticated": is_admin_request(request), "configured": bool(settings.admin_password)}
 
 
 @router.get("/stats")

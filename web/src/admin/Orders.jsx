@@ -34,15 +34,15 @@ export default function Orders() {
   return (
     <div>
       <div className="admin-head">
-        <h1>Orders</h1>
-        <p className="muted">Search runs the selected algorithm over customer names, emails, status and product names.</p>
+        <h1>Comenzi</h1>
+        <p className="muted">Căutarea rulează algoritmul ales peste numele clienților, e-mailuri, stări și numele produselor.</p>
       </div>
 
       <div className="admin-toolbar">
         <input
           className="admin-input"
           type="search"
-          placeholder="Search orders…"
+          placeholder="Caută în comenzi…"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
@@ -60,7 +60,7 @@ export default function Orders() {
         </div>
         {result && (
           <span className="muted small">
-            {visible.length} match{visible.length === 1 ? '' : 'es'} · {ALGORITHM_LABELS[result.algorithm]} · {result.time_us.toFixed(2)} µs
+            {visible.length} {visible.length === 1 ? 'potrivire' : 'potriviri'} · {ALGORITHM_LABELS[result.algorithm]} · {result.time_us.toFixed(2)} µs
           </span>
         )}
       </div>
@@ -69,11 +69,11 @@ export default function Orders() {
 
       <section className="panel">
         {orders.length === 0 ? (
-          <p className="muted">No orders yet. Place an order from the store to see it here.</p>
+          <p className="muted">Nicio comandă încă. Plasează o comandă din magazin ca să apară aici.</p>
         ) : (
           <table className="table">
             <thead>
-              <tr><th>#</th><th>Customer</th><th>Email</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th></tr>
+              <tr><th>#</th><th>Client</th><th>E-mail</th><th>Produse</th><th>Total</th><th>Stare</th><th>Data</th></tr>
             </thead>
             <tbody>
               {visible.map((order) => (
@@ -83,8 +83,8 @@ export default function Orders() {
                   <td>{order.customer_email}</td>
                   <td>{order.items.map((item) => `${item.product_name} ×${item.quantity}`).join(', ')}</td>
                   <td>{formatPrice(order.total_cents)}</td>
-                  <td><span className={`tag ${order.status === 'paid' ? 'tag-green' : 'tag-amber'}`}>{order.status}</span></td>
-                  <td className="muted small">{new Date(order.created_at).toLocaleDateString('en-GB')}</td>
+                  <td><span className={`tag ${order.status === 'paid' ? 'tag-green' : 'tag-amber'}`}>{order.status === 'paid' ? 'plătită' : 'în așteptare'}</span></td>
+                  <td className="muted small">{new Date(order.created_at).toLocaleDateString('ro-RO')}</td>
                 </tr>
               ))}
             </tbody>

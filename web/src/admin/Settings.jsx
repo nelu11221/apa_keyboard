@@ -27,15 +27,16 @@ export default function Settings() {
   return (
     <div>
       <div className="admin-head">
-        <h1>Settings</h1>
-        <p className="muted">Controls the search engine used by the customer-facing store.</p>
+        <h1>Setări</h1>
+        <p className="muted">Controlează motorul de căutare folosit de magazin.</p>
       </div>
 
       <section className="panel">
-        <h3>Store search algorithm</h3>
+        <h3>Algoritmul de căutare din magazin</h3>
         <p className="muted small">
-          Customers never see this choice — the search bar just works. Every search is logged with the
-          algorithm used, so you can compare real-world timings under <strong>Search algorithms</strong>.
+          Clienții nu văd această alegere — bara de căutare pur și simplu funcționează. Fiecare căutare
+          e înregistrată împreună cu algoritmul folosit, ca să poți compara timpii reali la
+          <strong> Algoritmi de căutare</strong>.
         </p>
         {error && <p className="notice notice-error">{error}</p>}
         <div className="radio-cards">
@@ -48,14 +49,14 @@ export default function Settings() {
             >
               <strong>{option.label}</strong>
               <span className="muted small">
-                {option.id === 'kmp' && 'Predictable, linear in every case.'}
-                {option.id === 'bmh' && 'Fastest on natural text (default).'}
-                {option.id === 'rk' && 'Hash-based, good for multi-pattern search.'}
+                {option.id === 'kmp' && 'Previzibil, liniar în orice caz.'}
+                {option.id === 'bmh' && 'Cel mai rapid pe text natural (implicit).'}
+                {option.id === 'rk' && 'Bazat pe hash, bun pentru căutarea mai multor șabloane.'}
               </span>
             </button>
           ))}
         </div>
-        {saved && <p className="muted small">Saved ✓</p>}
+        {saved && <p className="muted small">Salvat ✓</p>}
       </section>
     </div>
   )

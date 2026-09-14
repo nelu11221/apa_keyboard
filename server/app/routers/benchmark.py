@@ -2,12 +2,13 @@ import random
 import statistics
 import string
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query
 
 from .. import schemas
+from ..auth import require_admin
 from ..engine_client import run_search
 
-router = APIRouter(prefix="/api/benchmark", tags=["benchmark"])
+router = APIRouter(prefix="/api/benchmark", tags=["benchmark"], dependencies=[Depends(require_admin)])
 
 _TEXT_SIZES = [1_000, 5_000, 20_000, 50_000, 100_000, 300_000, 600_000, 1_000_000]
 

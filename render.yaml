@@ -11,6 +11,8 @@ services:
         value: https://SITE-UL-TAU.netlify.app   # înlocuiește cu adresa reală de pe Netlify
       - key: DATABASE_URL
         sync: false   # Supabase → Connect → Session pooler: postgresql://postgres.<ref>:<parola>@aws-0-<regiune>.pooler.supabase.com:5432/postgres
+      - key: ADMIN_PASSWORD
+        sync: false   # parola panoului /admin — se pune în dashboard-ul Render
       - key: STRIPE_SECRET_KEY
         sync: false   # se completează în dashboard-ul Render (secret)
       - key: STRIPE_WEBHOOK_SECRET

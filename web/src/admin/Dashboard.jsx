@@ -25,7 +25,7 @@ export default function Dashboard() {
   }, [])
 
   if (error) return <p className="notice notice-error">{error}</p>
-  if (!stats) return <p className="muted">Loading…</p>
+  if (!stats) return <p className="muted">Se încarcă…</p>
 
   const revenueSeries = stats.revenue_by_day.map((row) => ({
     day: row.day.slice(5),
@@ -36,21 +36,21 @@ export default function Dashboard() {
   return (
     <div>
       <div className="admin-head">
-        <h1>Dashboard</h1>
-        <p className="muted">Overview of sales, catalogue and search activity.</p>
+        <h1>Panou general</h1>
+        <p className="muted">Privire de ansamblu asupra vânzărilor, catalogului și căutărilor.</p>
       </div>
 
       <div className="stat-grid">
-        <StatTile label="Revenue (paid)" value={formatPrice(stats.revenue_cents)} hint={`${stats.orders_paid} paid orders`} />
-        <StatTile label="Orders" value={stats.orders_total} hint={`${stats.orders_pending} pending`} />
-        <StatTile label="Average order" value={formatPrice(stats.average_order_cents)} />
-        <StatTile label="Products" value={stats.products_total} hint={`${stats.low_stock.length} low on stock`} />
-        <StatTile label="Searches" value={stats.searches_total} hint="logged by the search engine" />
+        <StatTile label="Încasări (plătite)" value={formatPrice(stats.revenue_cents)} hint={`${stats.orders_paid} comenzi plătite`} />
+        <StatTile label="Comenzi" value={stats.orders_total} hint={`${stats.orders_pending} în așteptare`} />
+        <StatTile label="Comandă medie" value={formatPrice(stats.average_order_cents)} />
+        <StatTile label="Produse" value={stats.products_total} hint={`${stats.low_stock.length} cu stoc redus`} />
+        <StatTile label="Căutări" value={stats.searches_total} hint="înregistrate de motorul de căutare" />
       </div>
 
       <div className="admin-grid-2">
         <section className="panel">
-          <h3>Revenue · last 14 days</h3>
+          <h3>Încasări · ultimele 14 zile</h3>
           <ResponsiveContainer width="100%" height={240}>
             <AreaChart data={revenueSeries} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
@@ -62,16 +62,16 @@ export default function Dashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="#ECEAE4" vertical={false} />
               <XAxis dataKey="day" tick={{ fontSize: 11 }} />
               <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `$${v}`} width={54} />
-              <Tooltip formatter={(value, name) => (name === 'revenue' ? [`$${value.toFixed(2)}`, 'Revenue'] : [value, 'Orders'])} />
+              <Tooltip formatter={(value, name) => (name === 'revenue' ? [`$${value.toFixed(2)}`, 'Încasări'] : [value, 'Comenzi'])} />
               <Area type="monotone" dataKey="revenue" stroke="#FF4F1F" strokeWidth={2} fill="url(#rev)" />
             </AreaChart>
           </ResponsiveContainer>
         </section>
 
         <section className="panel">
-          <h3>Searches per algorithm</h3>
+          <h3>Căutări pe algoritm</h3>
           {stats.search_by_algorithm.length === 0 ? (
-            <p className="muted">No searches yet — try the search bar in the store.</p>
+            <p className="muted">Nicio căutare încă — încearcă bara de căutare din magazin.</p>
           ) : (
             <ResponsiveContainer width="100%" height={240}>
               <BarChart data={stats.search_by_algorithm} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -80,15 +80,15 @@ export default function Dashboard() {
                 <YAxis tick={{ fontSize: 11 }} width={40} allowDecimals={false} />
                 <Tooltip
                   labelFormatter={(id) => ALGORITHM_LABELS[id]}
-                  formatter={(value, name, entry) => (name === 'count' ? [value, 'Searches'] : [value, name])}
+                  formatter={(value, name, entry) => (name === 'count' ? [value, 'Căutări'] : [value, name])}
                   content={({ active, payload }) => {
                     if (!active || !payload?.length) return null
                     const row = payload[0].payload
                     return (
                       <div className="tip">
                         <strong>{ALGORITHM_LABELS[row.algorithm]}</strong>
-                        <div>{row.count} searches</div>
-                        <div>avg {row.avg_time_us} µs</div>
+                        <div>{row.count} căutări</div>
+                        <div>medie {row.avg_time_us} µs</div>
                       </div>
                     )
                   }}
@@ -107,12 +107,12 @@ export default function Dashboard() {
 
       <div className="admin-grid-2">
         <section className="panel">
-          <h3>Top products</h3>
+          <h3>Cele mai vândute</h3>
           {stats.top_products.length === 0 ? (
-            <p className="muted">No paid orders yet.</p>
+            <p className="muted">Nicio comandă plătită încă.</p>
           ) : (
             <table className="table">
-              <thead><tr><th>Product</th><th>Sold</th><th>Revenue</th></tr></thead>
+              <thead><tr><th>Produs</th><th>Vândute</th><th>Încasări</th></tr></thead>
               <tbody>
                 {stats.top_products.map((row) => (
                   <tr key={row.name}><td>{row.name}</td><td>{row.quantity}</td><td>{formatPrice(row.revenue_cents)}</td></tr>
@@ -123,18 +123,18 @@ export default function Dashboard() {
         </section>
 
         <section className="panel">
-          <h3>Low stock</h3>
+          <h3>Stoc redus</h3>
           {stats.low_stock.length === 0 ? (
-            <p className="muted">All products are well stocked.</p>
+            <p className="muted">Toate produsele au stoc suficient.</p>
           ) : (
             <table className="table">
-              <thead><tr><th>Product</th><th>Stock</th><th /></tr></thead>
+              <thead><tr><th>Produs</th><th>Stoc</th><th /></tr></thead>
               <tbody>
                 {stats.low_stock.map((product) => (
                   <tr key={product.id}>
                     <td>{product.name}</td>
                     <td><span className={product.stock === 0 ? 'tag tag-red' : 'tag tag-amber'}>{product.stock}</span></td>
-                    <td><Link to="/admin/products">Manage</Link></td>
+                    <td><Link to="/admin/products">Gestionează</Link></td>
                   </tr>
                 ))}
               </tbody>

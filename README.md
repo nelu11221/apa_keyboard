@@ -111,7 +111,8 @@ Setează în Netlify → *Site configuration → Environment variables*:
 și `render.yaml` (Blueprint).
 
 1. [render.com](https://render.com) → *New → Blueprint* → alege repo-ul `apa_keyboard` → *Apply*.
-2. În serviciul `nexa-api` → *Environment*: `FRONTEND_URL` = adresa site-ului Netlify; opțional
+2. În serviciul `nexa-api` → *Environment*: `FRONTEND_URL` = adresa site-ului Netlify,
+   `ADMIN_PASSWORD` = parola panoului `/admin` (fără ea panoul nu poate fi accesat); opțional
    `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET`.
 3. După deploy, copiază URL-ul serviciului (ex. `https://nexa-api.onrender.com`) și verifică
    `https://nexa-api.onrender.com/api/health` → `{"status":"ok"}`.
