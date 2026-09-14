@@ -32,4 +32,5 @@ app.include_router(admin.router)
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok"}
+    # `database` arată ce motor e folosit (sqlite local / postgresql pe Supabase)
+    return {"status": "ok", "database": engine.dialect.name}
